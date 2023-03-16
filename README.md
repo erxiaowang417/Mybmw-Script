@@ -1,4 +1,11 @@
 # Mybmw-Frida
+
+criptable
+
+
+
+capture
+
 基于arm /frida 注入 实现此app 的packet capture
 
 
