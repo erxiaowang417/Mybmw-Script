@@ -3,7 +3,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: car-alt;
 const RUNTIME_VERSION = 20201209;
-const VERSION_UPDATE  = 20220316;
+const VERSION_UPDATE  = 20220317;
 const Project_UPDATE  ="https://github.com/erxiaowang417/Mybmw-Script"
 
 class Base {
