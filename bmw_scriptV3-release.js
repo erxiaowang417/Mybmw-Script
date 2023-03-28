@@ -451,22 +451,6 @@ let MY_BMW_VEHICLE_DATA12 = 'MY_BMW_VEHICLE_DATA12';
 let WIDGET_DANGER_COLOR12 = '#ff0000';
 
 
-let header1={
-    "accept-language": "zh-CN",
-    host: "myprofile.bmw.com.cn",
-    "x-cluster-use-mock": "never",
-    "24-hour-format": "false",
-    "user-agent": "Dart/2.16 (dart:io)",
-    "x-user-agent": `android(qp1a.190711.020.n960fxxs8fuc4);bmw;2.12.0(19964);cn`,
-    "x-raw-locale": "zh-CN",
-    "bmw-units-preferences": "d=KM;v=L",
-    "x-identity-provider": "gcdm",
-};
-
-let H=Object.assign(header1, {"content-type": "application/json; charset=utf-8"}, {"authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZXMjMWM3YzUwMDYtZjc4NS00MWVlLTgzOGQtYWY4M2UxYWY0YTg3JDIkQSQxNjc3NjU0NTAyNjA3IiwiY2RhdGUiOiIyMDIzLTAzLTAxIDA3OjA4OjIyIiwibmJmIjoxNjc3NjU0NTAyLCJleHAiOjE2Nzc2NTc4MDIsImlhdCI6MTY3NzY1NDUwMn0.alc_G6ejCAeaFsOId0ZeDySGKayqCWyEgpN5c-55ANk"})
-
-
-
 class Widget extends Base {
     DeviceSize = {
         '428x926': {
