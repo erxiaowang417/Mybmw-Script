@@ -1,6 +1,6 @@
 /**
  * app版本 ：android-3.1.1
- * UPTATE_TIM ：20220328
+ * UPTATE_TIM ：202200405
  * file_name ：bmw_scriptV3-release.js
  */
 const RUNTIME_VERSION = 20201209;
@@ -452,6 +452,7 @@ let MY_BMW_LAST_CHECK_IN_AT12 = 'MY_BMW_LAST_CHECK_IN_AT12';
 let APP_USE_AGREEMENT12 = 'APP_USE_AGREEMENT12';
 let MY_BMW_VEHICLE_UPDATE_LAST_AT12 = 'MY_BMW_VEHICLE_UPDATE_LAST_AT12';
 let MY_BMW_VEHICLE_DATA12 = 'MY_BMW_VEHICLE_DATA12';
+let MY_BMW_VEHICLE_VIN12 = 'MY_BMW_VEHICLE_VIN12';
 let WIDGET_DANGER_COLOR12 = '#ff0000';
 
 
@@ -608,7 +609,8 @@ class Widget extends Base {
             MY_BMW_VEHICLE_UPDATE_LAST_AT12,
             APP_USE_AGREEMENT12,
             lastUpdateKey,
-            localVehicleDataKey
+            localVehicleDataKey,
+            MY_BMW_VEHICLE_VIN12
         ];
         for (const key of keyStoreArray) {
             try {
@@ -932,18 +934,14 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
     async render() {
         // check all dependencies
-
         await this.renderError('载入中...');
-
         if (
             (!this.userConfigData.username || this.userConfigData.username == '') &&
             (!this.userConfigData.custom_name || this.userConfigData.custom_name == '')
         ) {
             return await this.renderError('请先配置用户');
         }
-
         let data = await this.getData();
-
         if (
             !data &&
             (!this.userConfigData.username || this.userConfigData.username == '') &&
@@ -952,18 +950,16 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         ) {
             // put default data
             data = {
-                status: {
-                    doorsGeneralState: '已上锁',
+                state: {
+                    doorsState : {
+                        combinedSecurityState : "SECURED",
+                    },
                     lastUpdatedAt: new Date(),
-                    fuelIndicators: [
-                        {
-                            rangeValue: '888',
-                            levelValue: '99',
-                            rangeUnits: 'km',
-                            levelUnits: '%'
-                        }
-                    ],
-                    currentMileage: {mileage: 2233, units: 'km'}
+                    combustionFuelLevel : {
+                        range : 888,
+                        remainingFuelPercent : 99
+                    },
+                    currentMileage : 1234,
                 }
             };
         }
@@ -971,7 +967,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         if (!data) {
             return await this.renderError('获取车辆信息失败，请检查授权');
         }
-
         // start to render if we get information
         try {
             let screenSize = Device.screenResolution();
@@ -983,7 +978,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             console.warn('Display Error: ' + e.message);
             await this.renderError('显示错误：' + e.message);
         }
-        //console.log(JSON.stringify(data))
         switch (this.widgetFamily) {
             case 'large':
                 return await this.renderLarge(data);
@@ -993,7 +987,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
                 return await this.renderSmall(data);
         }
     }
-
     async getAppLogo() {
         let logoURL = DEFAULT_LOGO_LIGHT;
 
@@ -1009,7 +1002,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
         return await this.getImageByUrl(logoURL);
     }
-
     async renderError(errMsg) {
         let w = new ListWidget();
         w.backgroundGradient = this.getBackgroundColor();
@@ -1019,7 +1011,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         w.addStack().addText(errMsg);
         return w;
     }
-
     getFontColor() {
         if (this.userConfigData.force_dark_theme) {
             return Color.white();
@@ -1032,13 +1023,11 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         }
         return Color.dynamic(new Color('#2B2B2B', 1), Color.white());
     }
-
     getBackgroundColor() {
         const bgColor = new LinearGradient();
 
         let startColor = Color.dynamic(new Color(DEFAULT_BG_COLOR_LIGHT, 1), new Color(DEFAULT_BG_COLOR_DARK, 1));
         let endColor = Color.dynamic(new Color(DEFAULT_BG_COLOR_LIGHT, 1), new Color(DEFAULT_BG_COLOR_DARK, 1));
-
         try {
             if (this.userConfigData.force_dark_theme) {
                 startColor = new Color(this.appColorData['dark']['startColor'], 1);
@@ -1077,7 +1066,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
     validColorString(colorStr) {
         return colorStr && colorStr.search('#') == 0 && (colorStr.length == 4 || colorStr.length == 7); // TODO: change to regex
     }
-
     async renderSmall(data) {
         let w = new ListWidget();
         let fontColor = this.getFontColor();
@@ -1153,7 +1141,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         kmContainer.bottomAlignContent();
 
         try {
-            const {levelValue, levelUnits, rangeValue, rangeUnits} = this.getFuelIndicators(data.status.fuelIndicators);
+            const {levelValue, levelUnits, rangeValue, rangeUnits} = this.getFuelIndicators(data.state.combustionFuelLevel);
 
             const kmText = kmContainer.addText(`${rangeValue + ' ' + rangeUnits}`);
             kmText.font = this.getFont(`${WIDGET_FONT}`, 17);
@@ -1183,13 +1171,18 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         carStatusBox.centerAlignContent();
         carStatusBox.cornerRadius = 4;
         carStatusBox.backgroundColor = this.getFocusedBackgroundColor();
-
+        let carStatus =null;      
+        if (data && ("LOCKED" === data.state.doorsState.combinedSecurityState || "SECURED" === data.state.doorsState.combinedSecurityState)){
+            carStatus = `已上锁`;
+        }else{
+            carStatus = `已解锁`;  
+        }
         try {
-            const carStatusTxt = carStatusBox.addText(`${data.status.doorsGeneralState}`);
+            const carStatusTxt = carStatusBox.addText(`${carStatus}`);
 
             let displayFont = WIDGET_FONT;
             let displayFontColor = fontColor;
-            if (data.properties && !data.properties.areDoorsClosed) {
+            if (! ("LOCKED" === data.state.doorsState.combinedSecurityState || "SECURED" === data.state.doorsState.combinedSecurityState)){
                 displayFontColor = new Color(WIDGET_DANGER_COLOR12, 1);
                 displayFont = WIDGET_FONT_BOLD;
             }
@@ -1218,21 +1211,17 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         const carImageContainer = w.addStack();
         let canvasWidth = Math.round(width * 0.85);
         let canvasHeight = Math.round(width * 0.4);
-
         carImageContainer.setPadding(0, paddingLeft, 6, 0);
         if (!this.userConfigData.show_control_checks) {
             carImageContainer.layoutHorizontally();
             carImageContainer.addSpacer();
             carImageContainer.setPadding(6, paddingLeft, 6, paddingLeft);
         }
-
         let image = await this.getCarCanvasImage(data, canvasWidth, canvasHeight, 0.95);
         let carStatusImage = carImageContainer.addImage(image);
         carStatusImage.resizable = !this.userConfigData.show_control_checks;
         // ---底部部件完---
-
         w.url = 'de.bmw.connected.mobile20.cn://'; // BASEURL + encodeURI(SHORTCUTNAME);
-
         return w;
     }
 
@@ -1251,10 +1240,11 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
         const topContainer = w.addStack();
         topContainer.layoutHorizontally();
-
+        topContainer.centerAlignContent();
+        topContainer.size=new Size(width, height*0.15)
         const vehicleNameContainer = topContainer.addStack();
         vehicleNameContainer.layoutHorizontally();
-        vehicleNameContainer.setPadding(paddingTop, paddingLeft, 0, 0);
+        vehicleNameContainer.setPadding(paddingTop/2, paddingLeft*1.5, 0, 0);
 
         let vehicleNameStr = `${data.brand} ${data.model}`;
         if (this.userConfigData.custom_name && this.userConfigData.custom_name.length > 0) {
@@ -1274,12 +1264,15 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
         const logoImageContainer = topContainer.addStack();
         logoImageContainer.layoutHorizontally();
-        logoImageContainer.setPadding(paddingTop, 0, 0, paddingTop);
+        logoImageContainer.setPadding(0, paddingTop/4, 0, paddingLeft*1.5);
 
         try {
             let logoImage = logoImageContainer.addImage(await this.getAppLogo());
+            logoImage.imageSize=new Size(Math.round(topContainer.size.height*0.85),Math.round(topContainer.size.height*0.85))
             logoImage.rightAlignImage();
         } catch (e) {}
+        topContainer.addSpacer();
+
 
         const bodyContainer = w.addStack();
         bodyContainer.layoutHorizontally();
@@ -1297,7 +1290,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         kmContainer.bottomAlignContent();
 
         try {
-            const {levelValue, levelUnits, rangeValue, rangeUnits} = this.getFuelIndicators(data.status.fuelIndicators);
+            const {levelValue, levelUnits, rangeValue, rangeUnits} = this.getFuelIndicators(data.state.combustionFuelLevel);
             const kmText = kmContainer.addText(`${rangeValue + ' ' + rangeUnits}`);
             kmText.font = this.getFont(`${WIDGET_FONT}`, 20);
             kmText.textColor = fontColor;
@@ -1317,7 +1310,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             mileageContainer.setPadding(0, paddingLeft, 0, 0);
 
             let mileageText = mileageContainer.addText(
-                `总里程: ${data.status.currentMileage.mileage} ${data.status.currentMileage.units}`
+                `总里程: ${data.state.currentMileage} km`
             );
             mileageText.font = this.getFont(`${WIDGET_FONT}`, 9);
             mileageText.textColor = fontColor;
@@ -1336,13 +1329,18 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         carStatusBox.centerAlignContent();
         carStatusBox.cornerRadius = 4;
         carStatusBox.backgroundColor = this.getFocusedBackgroundColor();
-
+        let carStatus =null;      
+        if (data && ("LOCKED" === data.state.doorsState.combinedSecurityState || "SECURED" === data.state.doorsState.combinedSecurityState)){
+            carStatus = `已上锁`;
+        }else{
+            carStatus = `已解锁`;  
+        }
         try {
-            const carStatusTxt = carStatusBox.addText(`${data.status.doorsGeneralState}`);
+            const carStatusTxt = carStatusBox.addText(`${carStatus}`);
 
             let displayFont = WIDGET_FONT;
             let displayFontColor = fontColor;
-            if (data.properties && !data.properties.areDoorsClosed) {
+            if (! ("LOCKED" === data.state.doorsState.combinedSecurityState || "SECURED" === data.state.doorsState.combinedSecurityState)){
                 displayFontColor = new Color(WIDGET_DANGER_COLOR12, 1);
                 displayFont = WIDGET_FONT_BOLD;
             }
@@ -1364,18 +1362,22 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
         let locationStr = '';
         try {
-            locationStr = data.properties.vehicleLocation.address.formatted;
+            locationStr = data.state.location.address.formatted;
         } catch (e) {}
 
         leftContainer.addSpacer();
 
         const locationContainer = leftContainer.addStack();
-        locationContainer.setPadding(0, paddingLeft, 0, 0);
+        locationContainer.setPadding(0, paddingLeft, 16, 0);
+
         if (renderMediumContent) {
-            locationContainer.setPadding(0, paddingLeft, 16, 0);
+            locationContainer.size = new Size(Math.round(width * 0.45), Math.round(height * 0.18));
+            locationContainer.layoutVertically();
+            
+            locationContainer.setPadding(paddingTop/2,paddingLeft*1.25, 0 , 0);
         }
         const locationText = locationContainer.addText(locationStr);
-        locationText.font = this.getFont(`${WIDGET_FONT}`, 10);
+        locationText.font = this.getFont(`${WIDGET_FONT}`, 9);
         locationText.textColor = fontColor;
         locationText.textOpacity = 0.5;
         locationText.url = this.buildMapURL(data);
@@ -1399,21 +1401,20 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             let carStatusImage = carImageContainer.addImage(image);
             carStatusImage.resizable = !this.userConfigData.show_control_checks;
 
-            if (data.status && data.status.doorsAndWindows && data.status.doorsAndWindows.length > 0) {
-                let doorWindowStatus = data.status.doorsAndWindows[0];
-
+        
+            if (data.state.doorsState) {
                 let windowStatusContainer = rightContainer.addStack();
                 windowStatusContainer.setPadding(6, 0, 12, 0);
 
                 windowStatusContainer.layoutHorizontally();
                 windowStatusContainer.addSpacer();
 
-                let windowStatus = `${doorWindowStatus.title} ${doorWindowStatus.state} `;
+                let windowStatus = `"锁定状态" ${carStatus} `;
                 let windowStatusText = windowStatusContainer.addText(windowStatus);
 
                 let displayFont = WIDGET_FONT;
                 let displayFontColor = fontColor;
-                if (data.properties && !data.properties.areWindowsClosed) {
+                if (! ("LOCKED" === data.state.doorsState.combinedSecurityState || "SECURED" === data.state.doorsState.combinedSecurityState)){
                     displayFontColor = new Color(WIDGET_DANGER_COLOR12, 1);
                     displayFont = WIDGET_FONT_BOLD;
                 }
@@ -1425,16 +1426,14 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
                 windowStatusContainer.addSpacer();
             }
         }
-
         w.url = 'de.bmw.connected.mobile20.cn://';
-
         return w;
     }
 
     async renderLarge(data) {
         let w = await this.renderMedium(data, true);
         const {width, height} = data.size['large'];
-        w.setPadding(0, 0, 0, 0);
+        w.setPadding(5, 0, 0, 0);
         w.addSpacer();
         let fontColor = this.getFontColor();
 
@@ -1453,9 +1452,9 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             let latLng = null;
             try {
                 latLng =
-                    data.properties.vehicleLocation.coordinates.longitude +
+                    data.state.location.coordinates.longitude +
                     ',' +
-                    data.properties.vehicleLocation.coordinates.latitude;
+                    data.state.location.coordinates.latitude;
             } catch (e) {}
 
             let mapImage = await this.loadMapView(latLng, mapWidth, mapHeight, true);
@@ -1494,9 +1493,14 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         } catch (e) {
             console.log(e.message);
         }
-
-        if (data.status && data.status.doorsAndWindows && data.status.doorsAndWindows.length > 0) {
-            let doorWindowStatus = data.status.doorsAndWindows[0];
+        
+        let carStatus =null;      
+        if (data && ("LOCKED" === data.state.doorsState.combinedSecurityState || "SECURED" === data.state.doorsState.combinedSecurityState)){
+            carStatus = `已上锁`;
+        }else{
+            carStatus = `已解锁`;  
+        }
+        if (data.state.doorsState) {
 
             let windowStatusContainer = largeExtraContainer.addStack();
             windowStatusContainer.setPadding(2, 0, 16, 0);
@@ -1504,7 +1508,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             windowStatusContainer.layoutHorizontally();
             windowStatusContainer.addSpacer();
 
-            let windowStatus = `${doorWindowStatus.title} ${doorWindowStatus.state} `;
+            let windowStatus = `锁定状态 ${carStatus} `;
             let windowStatusText = windowStatusContainer.addText(windowStatus);
 
             let displayFont = WIDGET_FONT;
@@ -1520,7 +1524,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
             windowStatusContainer.addSpacer();
         }
-
         return w;
     }
 
@@ -1563,7 +1566,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
                 if (checkControlMessages && checkControlMessages.length == 0) {
                     canvas.drawTextInRect(
-                        'ALL',
+                        "ALL",
                         new Rect(
                             0, //
                             0,
@@ -1595,7 +1598,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
                     for (const checkControlMessage of checkControlMessages) {
                         canvas.drawTextInRect(
-                            checkControlMessage.title,
+                            checkControlMessage.name,
                             new Rect(
                                 Math.round(messageFontSize * 1.5),
                                 messageOffset,
@@ -1673,7 +1676,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
 
             req.method = 'GET';
 
-            //const img = await req.loadImage();
             const res = await req.load();
 
             try {
@@ -1683,7 +1685,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             } catch (e) {
                 console.error(e.message);
             }
-
             // 存储到缓存
             //FileManager.local().writeImage(cacheFile, img);
             let data = Data.fromFile(cacheFile);
@@ -1709,17 +1710,14 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
                 return [];
             }
 
-            let checkControlMessages = data.status.checkControlMessages.filter((checkControlMessage) => {
-                return checkControlMessage['criticalness'] != 'nonCritical';
-            });
-
-            if (data.status.issues) {
-                for (const key in data.status.issues) {
-                    if (!data.status.issues[key]) {
+            let checkControlMessages=Array(0)
+            if (data.state.checkControlMessages) {
+                for (const key in data.state.checkControlMessages) {
+                    if (!data.state.checkControlMessages[key]) {
                         continue;
                     }
-                    if (data.status.issues[key]['title']) {
-                        checkControlMessages.push(data.status.issues[key]);
+                    if (data.state.checkControlMessages[key]['name']) {
+                        checkControlMessages.push(data.state.checkControlMessages[key]);
                     }
                 }
             }
@@ -1730,46 +1728,24 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         }
     }
 
-    getFuelIndicators(fuelIndicators) {
+    getFuelIndicators(combustionFuelLevel) {
         let _fuelObj = {
             levelValue: null,
-            levelUnits: null,
+            levelUnits: "%",
             rangeValue: null,
-            rangeUnits: null,
+            rangeUnits: "km",
             chargingType: null
         };
         try {
-            if (fuelIndicators.length == 1) {
-                for (const key in _fuelObj) {
-                    if (fuelIndicators[0][key] && !_fuelObj[key]) {
-                        _fuelObj[key] = fuelIndicators[0][key];
-                    }
-                }
-            } else {
-                for (const fuelIndicator of fuelIndicators) {
-                    if (!_fuelObj['rangeValue']) {
-                        _fuelObj['rangeValue'] = Number(fuelIndicator['rangeValue']);
-                        _fuelObj['rangeUnits'] = fuelIndicator['rangeUnits'];
-                    }
-
-                    if (Number(fuelIndicator['rangeValue']) >= _fuelObj['rangeValue']) {
-                        _fuelObj['rangeValue'] = Number(fuelIndicator['rangeValue']);
-                        _fuelObj['rangeUnits'] = fuelIndicator['rangeUnits'];
-                    }
-                }
-
-                // if it is hyper vehicle, we are using range value as unit. eg 300km / 200km | 100km
-                let unitText = '';
-                for (const fuelIndicator of fuelIndicators) {
-                    if (_fuelObj['rangeValue'] > fuelIndicator['rangeValue']) {
-                        if (unitText != '') {
-                            unitText += ' ';
-                        }
-                        unitText += `${fuelIndicator['rangeValue']}`;
-                    }
-                }
-                _fuelObj['levelValue'] = unitText;
+          if(combustionFuelLevel.range && combustionFuelLevel.remainingFuelPercent){
+            if (!_fuelObj['rangeValue']) {
+              _fuelObj['rangeValue'] = Number(combustionFuelLevel['range']);
+              _fuelObj['levelValue'] = combustionFuelLevel['remainingFuelPercent'];
             }
+            if (Number(combustionFuelLevel['rangeValue']) >= _fuelObj['rangeValue']) {
+                _fuelObj['rangeValue'] = Number(combustionFuelLevel['rangeValue']);
+            }
+          }
         } catch (e) {}
 
         for (const key in _fuelObj) {
@@ -1777,7 +1753,6 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
                 _fuelObj[key] = '';
             }
         }
-
         return _fuelObj;
     }
 
@@ -1786,11 +1761,11 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         let latLng = '';
 
         try {
-            locationStr = data.properties.vehicleLocation.address.formatted;
+            locationStr = data.state.location.address.formatted;
             latLng =
-                data.properties.vehicleLocation.coordinates.longitude +
+                data.state.location.coordinates.longitude +
                 ',' +
-                data.properties.vehicleLocation.coordinates.latitude;
+                data.state.location.coordinates.latitude;
         } catch (e) {
             return '';
         }
@@ -1799,11 +1774,11 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
     }
 
     formatStatusLabel(data) {
-        if (!data.status || !data.status.lastUpdatedAt) {
+        if (!data.state || !data.state.lastUpdatedAt) {
             return '';
         }
 
-        let lastUpdated = new Date(data.status.lastUpdatedAt);
+        let lastUpdated = new Date(data.state.lastUpdatedAt);
         const today = new Date();
 
         let formatter = 'MM-dd HH:mm';
@@ -1834,7 +1809,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             console.error('Check In Error: ' + e.message);
         }
 
-        return await this.getVehicleDetails(accessToken, forceRefresh);
+        return await this.getVehicleDetails(forceRefresh);
     }
 
     async getAccessToken(forceRefresh = false) {
@@ -1888,8 +1863,28 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
             return '';
         }
     }
-
-    async getVehicleDetails(accesstoken, forceRefresh = false) {
+    async  get_Base(){
+        let accessToken = await this.getAccessToken(false);
+        const e = new Request(`https://myprofile.bmw.com.cn/eadrax-vcs/v2/vehicles?`);
+        let a = BMW_HEADERS;
+        e.headers =  Object.assign(a, {
+            "authorization": "Bearer " + accessToken
+        });
+        const t = await e.loadJSON(); 
+        return  t[0]
+    }
+    async v_state(e) {
+        let accessToken = await this.getAccessToken(false);
+        const t = new Request(`https://myprofile.bmw.com.cn/eadrax-vcs/v4/vehicles/state?`);
+        let a = BMW_HEADERS;
+        t.headers = Object.assign(a, {
+            "bmw-vin": e,
+            "authorization": "Bearer " + accessToken
+        });
+        const n = await t.loadJSON();
+        return  Promise.resolve(n)
+    }
+    async getVehicleDetails(forceRefresh = false) {
         let vin = this.userConfigData.vin || '';
 
         let lastUpdateKey = vin + MY_BMW_VEHICLE_UPDATE_LAST_AT12;
@@ -1911,21 +1906,26 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         }
 
         let vehicleData = null;
-
+        let Info = null;
         try {
             console.log('Start to get vehicle details online');
-            let req = new Request(BMW_SERVER_HOST + `/eadrax-vcs/v1/vehicles?appDateTime=${new Date().valueOf()}`);
-            // let req = new Request(`http://192.168.50.7:5566/Publish/example.json?appDateTime=${new Date().valueOf()}`);
+            if(forceRefresh){
+                let myInfo= await this.get_Base();
 
-            req.headers = {
-                ...BMW_HEADERS,
-                authorization: 'Bearer ' + accesstoken,
-                'content-type': 'application/json; charset=utf-8'
-            };
+                Info=Object.assign({
+                  "model": myInfo.model,
+                  "brand": myInfo.brand,
+                  "vin":   myInfo.vin
+                });
+                
+        
+                Keychain.set(MY_BMW_VEHICLE_VIN12, JSON.stringify(Info));
+            }
 
-            const vehicles = await req.loadJSON();
-
-            if (vehicles && Array.isArray(vehicles) && vehicles.length > 0) {
+            let vehicles = null;
+            if(Keychain.contains(MY_BMW_VEHICLE_VIN12))
+                vehicles = await this.v_state(JSON.parse(Keychain.get(MY_BMW_VEHICLE_VIN12)).vin);
+            if (vehicles) {
                 console.log('Get vehicle details success');
                 if (vin && vin.length > 0) {
                     // if more than one vehicle
@@ -1940,10 +1940,16 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
                     }
                 }
 
-                vehicleData = vehicleData || vehicles[0];
+                vehicleData = vehicleData || vehicles;
 
                 if (vehicleData) {
                     Keychain.set(lastUpdateKey, String(new Date().valueOf()));
+                    delete vehicleData.capabilities
+                    if(Keychain.contains(MY_BMW_VEHICLE_VIN12)){
+                        vehicleData.model=JSON.parse(Keychain.get(MY_BMW_VEHICLE_VIN12)).model
+                        vehicleData.brand=JSON.parse(Keychain.get(MY_BMW_VEHICLE_VIN12)).brand
+                        vehicleData.vin=JSON.parse(Keychain.get(MY_BMW_VEHICLE_VIN12)).vin
+                    }
                     Keychain.set(localVehicleDataKey, JSON.stringify(vehicleData));
 
                     if (config.runsInApp) {
@@ -1965,6 +1971,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
                 }
             }
         } catch (e) {
+            console.log(e)
             if (config.runsInApp) {
                 const confirmationAlert = new Alert();
 
@@ -1978,7 +1985,7 @@ var version_='jsjiami.com.v7';const _0x43ac32=_0x9b53;(function(_0x256219,_0x2e1
         }
 
         // if vehicle data is not found we use cache
-        return vehicleData && vehicleData.vin ? vehicleData : cacheData;
+        return vehicleData ? vehicleData : cacheData;
     }
 
     async loadVehicleFromCache(vin) {
