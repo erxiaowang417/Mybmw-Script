@@ -1,6 +1,7 @@
 /**
+ * 
  * app版本 ：android-2.12.0
- * UPTATE_TIM ：20220331
+ * UPTATE_TIM ：20220405
  * file_name ：bmw_scriptV2_SMS-release.js
  */
 const RUNTIME_VERSION = 20201209;
@@ -669,6 +670,21 @@ class Widget extends Base {
         const o = await n.loadJSON();
         return Promise.resolve(o)
     }
+    async  getcrypto(){
+
+        let a = FileManager.local(),
+        encry = a.joinPath(a.libraryDirectory(), ("crypto-js.js"));
+        if ( a.fileExists(encry)) console.log("加密密码所需文件：文件已存在,直接读取");
+        else {
+            console.log("文件不存在,需要加载：");// 
+            const i = new Request(`${Authorurl}${encodeURIComponent("crypto-js.js")}`),// 
+            o = await i.load();// 
+            a.write(encry, o), console.log("文件写入成// 功")
+        } 
+        let CryptoJS=importModule(encry);
+        if (null == CryptoJS) console.log(`Module '+"crypto-js.js"+' not found.`);
+        return CryptoJS
+    }
     async myBMWLogin() {
         const userLoginAlert0 = new Alert();
         userLoginAlert0.title = '配置BMW登录';
@@ -687,6 +703,18 @@ class Widget extends Base {
             mobile: this.userConfigData.username,
             version: Codeversion,
             v: "2.12.0"
+        }
+        const CryptoJS=await this.getcrypto();
+        if(CryptoJS!=null)
+            console.log("lib测试"+CryptoJS.SHA256("123456") );
+        else {
+            console.log("未找到CryptoJS 请重试" );
+            const userLoginAlert2 = new Alert();
+            userLoginAlert2.title = '配置失败！';
+            userLoginAlert2.message = '未找到CryptoJS 请重试';
+            userLoginAlert2.addAction('确定');
+            await userLoginAlert2.presentAlert();
+            return;
         }
 ///////////////////////////////////////
 
