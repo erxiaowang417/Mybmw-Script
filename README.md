@@ -57,7 +57,7 @@ scriptable
  实现http cathcer
 
 
-[查看下载apk](https://github.com/erxiaowang417/Mybmw-Script/tree/main/apk)
+[查看下载apk](https://github.com/erxiaowang417/Mybmw-Script/releases/tag/apk-modify)
 
 ## 2 frida + 官方app + catcher
  
