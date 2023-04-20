@@ -1,6 +1,22 @@
 # Mybmw
 
-## scriptable
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>目录</summary>
+  <ol>
+    <li>
+      <a href="#小组件相关">小组件 </a>
+    </li>
+    <li><a href="#安卓真机catcher">catcher环境</a></li>
+  </ol>
+</details>
+
+
+
+## 小组件相关
+
+
+scriptable
 
 * 非原作者
 * 免费
@@ -30,5 +46,22 @@
 
 
 
-## 仅使用 catcher
+## 安卓真机catcher
+
+
+
+基础抓包环境无法对此app进行catcher，两个方案实现。
+
+## 1 catcher + modify app
+ 
+ 实现http cathcer
+
+
+[查看下载apk](https://github.com/erxiaowang417/Mybmw-Script/tree/main/apk)
+
+## 2 frida + 官方app + catcher
+ 
+ 实现http cathcer
+
+
 [查看方案](https://github.com/erxiaowang417/Mybmw-Script/tree/main/frida)
