@@ -11,17 +11,45 @@
   </ol>
 </details>
 
+## 安卓真机catcher
 
+
+
+基础抓包环境无法对此app进行catcher，两个方案实现。
+
+## 1 catcher + modify app
+ 
+ 实现http cathcer
+
+
+[查看下载apk](https://github.com/erxiaowang417/Mybmw-Script/releases/tag/apk-modify)
+
+## 2 frida + 官方app + catcher
+ 
+ 实现http cathcer
+
+
+[查看方案](https://github.com/erxiaowang417/Mybmw-Script/tree/main/frida)
 
 ## 小组件相关
 
 
 scriptable
 
-* 非原作者
 * 免费
-* 仅在原方案基础上仅修改登陆失败的问题
 
+------
+**更新：**       2023-4-？ 
+* small UI 增加几种方案
+* 填坑
+
+------
+**更新：**       2023-3-14 
+* 仅在原方案基础上仅修改登陆失败的问题
+* 未改变UI
+
+------
+**方法：**
 - 下载对应版本(两种方式)
 
         食用方法：
@@ -46,22 +74,4 @@ scriptable
 
 
 
-## 安卓真机catcher
 
-
-
-基础抓包环境无法对此app进行catcher，两个方案实现。
-
-## 1 catcher + modify app
- 
- 实现http cathcer
-
-
-[查看下载apk](https://github.com/erxiaowang417/Mybmw-Script/releases/tag/apk-modify)
-
-## 2 frida + 官方app + catcher
- 
- 实现http cathcer
-
-
-[查看方案](https://github.com/erxiaowang417/Mybmw-Script/tree/main/frida)
