@@ -47,7 +47,7 @@ scriptable
   <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/base.png" width="100"  alt="">
 * Parameter=胎压
 
-  <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/%E8%83%8E%E5%8E%8B.png" width="100"  alt="">
+  <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/TIRE.png" width="100"  alt="">
 
 * Parameter=LOCK
 
