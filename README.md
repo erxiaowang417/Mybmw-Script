@@ -41,12 +41,13 @@ scriptable
 ------
 **更新：**       2023-4-26 
 * small UI 增加几种方案
+* 3.3.1无法登陆 暂不使用，下次更新
 * Parameter=
 
   <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/base.png" width="100"  alt="">
 * Parameter=胎压
 
-  <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/%E8%83%8E%E5%8E%8B.png" width="100"  alt="胎压">
+  <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/%E8%83%8E%E5%8E%8B.png" width="100"  alt="">
 
 * Parameter=LOCK
 
@@ -63,9 +64,9 @@ scriptable
         食用方法：
             1.本代码调试过程使用密码登录，介意登录的慎用！
 
-- 方式一 账户+password(v3.3.1存在部登录失败的问题，非密码错误，没遇到无法调试)
+- 方式一 账户+password(❌暂不使用)
 
-        U='小组件完全免费-收费的都是骗子';
+        //U='小组件完全免费-收费的都是骗子';
         N='bmw_scriptV3-release';
         await Promise.all([`${N}.js`].map(async(js)=>{try{F=FileManager[module.filename.includes('Documents/iCloud~')?'iCloud':'local']();F.remove(F.joinPath(F.documentsDirectory(),js));}catch(e){}F.write(F.joinPath(F.documentsDirectory(),js),await new Request(`https://gitee.com/erxiaowang417/scriptable/raw/master/src/${encodeURI(N)}.js`).load());}));F.remove(module.filename);Safari.open('scriptable:///run?scriptName=')
         //复制整段代码，新建一个空白小组件，粘贴进去点一下右下角运行，然后进入宝马小组件登陆就好了。
