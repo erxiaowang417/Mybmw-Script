@@ -38,6 +38,18 @@ scriptable
 
 * 免费
 
+
+------
+**更新：**       2023-5-3 
+* 3.3.1修复bug
+* Parameter=里程
+
+  <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/Mile.png" width="100"  alt="">
+* Parameter=停留
+
+  <img src="https://github.com/erxiaowang417/Mybmw-Script/blob/main/png/STOP.png" width="100"  alt="">
+
+
 ------
 **更新：**       2023-4-26 
 * small UI 增加几种方案
@@ -64,7 +76,7 @@ scriptable
         食用方法：
             1.本代码调试过程使用密码登录，介意登录的慎用！
 
-- 方式一 账户+password(❌暂不使用)
+- 方式一 账户+password
 
         //U='小组件完全免费-收费的都是骗子';
         N='bmw_scriptV3-release';
