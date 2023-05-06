@@ -10,6 +10,7 @@
   </ol>
 </details>
 
+---
 ## 安卓真机catcher
 
 基础抓包环境无法对此app进行catcher，两个方案实现。
@@ -28,11 +29,14 @@
 
 [查看方案](https://github.com/erxiaowang417/Mybmw-Script/tree/main/frida)
 
-
+------
 ## 逆向so
 
 Nonce是Number once的缩写，在密码学中Nonce是一个只被使用一次的任意或非重复的随机数值。
+
 [查看方案](https://github.com/erxiaowang417/Mybmw-Script/tree/main/Reverse)
+
+---
 ## 小组件相关
 
 
@@ -43,7 +47,7 @@ scriptable[linker组件]
 
 
 
-------
+---
 **更新：**       2023-5-3 
 * 3.3.1修复bug
 * Parameter=里程
