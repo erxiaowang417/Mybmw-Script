@@ -14,7 +14,7 @@ let USER_HEADERS = {
   'Accept-Language': 'zh-CN',
   'x-user-agent': 'android(qp1a.190711.020.n960fxxs8fuc4);bmw;3.3.1(22432);cn',
   "accept-language": "zh-CN",
-  host: "myprofile.bmw.com.cn",
+  host: SERVER_HOST,
   "x-cluster-use-mock": "never",
   "24-hour-format": "false",
   "x-identity-provider": "gcdm",
