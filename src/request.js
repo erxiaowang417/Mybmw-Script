@@ -70,7 +70,7 @@ async function request(options) {
 
 async function sliderCaptcha(phone) {
   return await request({
-    url : BMW_SERVER_HOST + '/eadrax-coas/v2/cop/slider-captcha',
+    url : SERVER_HOST + '/eadrax-coas/v2/cop/slider-captcha',
     method : 'POST',
     headers : {
     ...USER_HEADERS
@@ -89,7 +89,7 @@ async function sliderCaptcha(phone) {
  */
 async function checkCaptcha (position,verifyId) {
   return await request({
-    url : BMW_SERVER_HOST + '/eadrax-coas/v1/cop/check-captcha',
+    url : SERVER_HOST + '/eadrax-coas/v1/cop/check-captcha',
     method : 'POST',
     headers : {
     ...USER_HEADERS
@@ -172,7 +172,7 @@ function generage_nonce(In){
 async function pdwlogin (options) {
   const{m,d,p,v,n}=options;
   const res = await request({
-      url:  BMW_SERVER_HOST + '/eadrax-coas/v2/login/pwd',
+      url:  SERVER_HOST + '/eadrax-coas/v2/login/pwd',
       method :'POST',
       headers : {
       ...USER_HEADERS,
@@ -206,7 +206,7 @@ async function pdwlogin (options) {
 async function rT(gcid,refresh_token) {
   let nonce =generage_nonce(gcid);
   const res = await request({
-    url:  BMW_SERVER_HOST + '/eadrax-coas/v2/oauth/token',
+    url:  SERVER_HOST + '/eadrax-coas/v2/oauth/token',
     method :'POST',
     headers : {
     ...USER_HEADERS,
