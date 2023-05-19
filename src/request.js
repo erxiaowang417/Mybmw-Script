@@ -103,7 +103,7 @@ async function checkCaptcha (position,verifyId) {
  * @author  erxiaownag
  * @license Apache-2.0
  * @param   {string} In 手機號|gcid
- * @return  {string} Nonce 
+ * @return  {string} 
  * 
  */
 function generage_nonce(In){
