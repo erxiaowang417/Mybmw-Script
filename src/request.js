@@ -23,8 +23,6 @@ let USER_HEADERS = {
 
 /**
  * JSON网络请求
- * @author  erxiaownag
- * @license Apache-2.0
  * @param  {object} options 配置对象
  * @param  {string} options.url 请求地址
  * @param  {'GET'|'POST'|'DELETE'} options.method 请求地址
@@ -50,8 +48,6 @@ async function request(options) {
 }
 /**
  * 獲得滑動驗證碼
- * @author  erxiaownag
- * @license Apache-2.0
  * @param   {string} phone 手機號
  * @return  {object} obj
  * 
@@ -81,8 +77,6 @@ async function sliderCaptcha(phone) {
 }
 /**
  * 提交滑動驗證
- * @author  erxiaownag
- * @license Apache-2.0
  * @param   {string} position 
  * @param   {string} verifyId
  * @return  {object} obj
@@ -100,8 +94,6 @@ async function checkCaptcha (position,verifyId) {
 }
 /**
  * 產生nonce
- * @author  erxiaownag
- * @license Apache-2.0
  * @param   {string} In 手機號|gcid
  * @return  {string} 
  * 
@@ -146,7 +138,7 @@ function generage_nonce(In){
   return nonce;
 }
 /**
- * @author erxiaowang
+ * login
  * @param {object} options    对象
  * @param {string} options.m  mobile
  * @param {string} options.d  deviceId
