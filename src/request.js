@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 /**
- * @description 记录常用接口，有时效性
+ * @description 记录常用接口
  * @author  erxiaownag
  * @license Apache-2.0
  * 
