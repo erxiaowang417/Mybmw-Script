@@ -169,8 +169,9 @@ async function pdwlogin (options) {
       headers : {
       ...USER_HEADERS,
       'User-Agent' : `Dart/2.18 (dart:io)`,
-      'x-raw-locale':"zh-CN",
+      'x-raw-locale':"zh-Hans-CN",
       'x-login-nonce': n,
+      "bmw-units-preferences":"d=KM;v=L;p=B;ec=KWH100KM;fc=L100KM;",
       },
       body : JSON.stringify({mobile: m, password: p, deviceId: d, verifyId: v}),
       Mode : 'JSON'
@@ -202,10 +203,11 @@ async function rT(gcid,refresh_token) {
     method :'POST',
     headers : {
     ...USER_HEADERS,
-    'x-raw-locale':"zh-CN",
+    'x-raw-locale':"zh-Hans-CN",
     'bmw-units-preferences':'d=KM;v=L',
     'Content-Type':'application/x-www-form-urlencoded; charset=utf-8',
-    'x-login-nonce': nonce
+    'x-login-nonce': nonce,
+    "bmw-units-preferences":"d=KM;v=L;p=B;ec=KWH100KM;fc=L100KM;"
     },
     body : 'grant_type=refresh_token&refresh_token='+refresh_token,
     Mode : 'JSON'
