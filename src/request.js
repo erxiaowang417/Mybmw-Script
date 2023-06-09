@@ -12,13 +12,15 @@ let USER_HEADERS = {
   "user-agent": "Dart/2.18 (dart:io)",
   'Content-Type': 'application/json; charset=utf-8',
   'Accept-Language': 'zh-CN',
-  'x-user-agent': 'android(qp1a.190711.020.n960fxxs8fuc4);bmw;3.3.1(22432);cn',
+  'x-ugitser-agent': 'android(qp1a.190711.020.n960fxxs8fuc4);bmw;3.6.0(23632);cn',
   "accept-language": "zh-CN",
-  host: SERVER_HOST,
+  'host': SERVER_HOST,
   "x-cluster-use-mock": "never",
   "24-hour-format": "false",
   "x-identity-provider": "gcdm",
   "content-type": "application/json; charset=utf-8",
+  "bmw-units-preferences":"d=KM;v=L;p=B;ec=KWH100KM;fc=L100KM;",
+  'x-raw-locale':"zh-Hans-CN",
 };
 
 /**
@@ -169,9 +171,7 @@ async function pdwlogin (options) {
       headers : {
       ...USER_HEADERS,
       'User-Agent' : `Dart/2.18 (dart:io)`,
-      'x-raw-locale':"zh-Hans-CN",
       'x-login-nonce': n,
-      "bmw-units-preferences":"d=KM;v=L;p=B;ec=KWH100KM;fc=L100KM;",
       },
       body : JSON.stringify({mobile: m, password: p, deviceId: d, verifyId: v}),
       Mode : 'JSON'
@@ -203,11 +203,8 @@ async function rT(gcid,refresh_token) {
     method :'POST',
     headers : {
     ...USER_HEADERS,
-    'x-raw-locale':"zh-Hans-CN",
-    'bmw-units-preferences':'d=KM;v=L',
     'Content-Type':'application/x-www-form-urlencoded; charset=utf-8',
     'x-login-nonce': nonce,
-    "bmw-units-preferences":"d=KM;v=L;p=B;ec=KWH100KM;fc=L100KM;"
     },
     body : 'grant_type=refresh_token&refresh_token='+refresh_token,
     Mode : 'JSON'
