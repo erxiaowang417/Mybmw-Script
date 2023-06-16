@@ -219,6 +219,25 @@ async function rT(gcid,refresh_token) {
     return '';
   }
 }
+
+async function DailySign(access_token) {
+  const res = await request({
+    url : SERVER_HOST + '/cis/eadrax-community/private-api/v4/mine/check-in',
+    method : 'POST',
+    headers : {
+      ...USER_HEADERS,
+      authorization: 'Bearer ' + access_token,
+    },
+    body : JSON.stringify({signDate: null}),
+    Mode : 'JSON'
+  });
+  if (res.code  && res.code == 200) {
+    ;
+  }
+  if (res.code != 200) {
+    ;
+  }
+}
   
   
   
