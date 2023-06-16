@@ -12,7 +12,7 @@ let USER_HEADERS = {
   "user-agent": "Dart/2.18 (dart:io)",
   'Content-Type': 'application/json; charset=utf-8',
   'Accept-Language': 'zh-CN',
-  'x-ugitser-agent': 'android(qp1a.190711.020.n960fxxs8fuc4);bmw;3.6.0(23632);cn',
+  'x-ugitser-agent': 'android(qp1a.190711.020.n960fxxs8fuc4);bmw;3.6.1(23634);cn',
   "accept-language": "zh-CN",
   'host': SERVER_HOST,
   "x-cluster-use-mock": "never",
@@ -228,7 +228,7 @@ async function DailySign(access_token) {
       ...USER_HEADERS,
       authorization: 'Bearer ' + access_token,
     },
-    body : JSON.stringify({signDate: null}),
+    body : JSON.stringify({verificationId:null,verificationCode:null}),
     Mode : 'JSON'
   });
   if (res.code  && res.code == 200) {
