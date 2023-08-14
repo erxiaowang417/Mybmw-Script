@@ -8,13 +8,19 @@
  */
 
 /** 
- * @version 3.7.0
+ * @version 3.7.1
  * */
+const platform='android'; //'ios'
+const bundShortVersion='3.7.1';
+const bundVersion='25696';
+const UA=  (platform==='ios' &&`ios(15.6);bmw;${bundShortVersion}(${bundVersion});cn`)||`android(n960);bmw;${bundShortVersion}(${bundVersion});cn`
+
+
 let USER_HEADERS = {
   "user-agent": "Dart/2.19 (dart:io)",
   'Content-Type': 'application/json; charset=utf-8',
   'Accept-Language': 'zh-CN',
-  'x-ugitser-agent': 'android(qp1a.190711.020.n960);bmw;3.7.0(25692);cn',
+  'x-user-agent': UA,
   "accept-language": "zh-CN",
   'host': SERVER_HOST,
   "x-cluster-use-mock": "never",
@@ -28,42 +34,48 @@ let USER_HEADERS = {
 
 /**
  *
- * @date 2023-07-28
+ * @date 2023-08-14
  * @param {*} In 手機號|gcid
  * @return {*} 
- * @version 3.7.0
+ * @version 3.7.1
  */
 function generage_nonce(In){
   let nonce = '';
   const fm = FileManager.local();
   const CryptoJS = importModule(fm.joinPath(fm.libraryDirectory(), "crypto-js.js"));
-  const bet = "01234abcdefguvwxyz56789";
-  const Bet = "87492utpyxnsakjedo65103";
+  
+  const bet = "34785ghicotuvwdeflmnxyjkabzpqrs60129";
   function RandomNum(length) {
     return Array.from({ length }, () => bet[Math.floor(Math.random() * bet.length)]).join("");
   }
-  const k1 = RandomNum(1),
-  k2 = RandomNum(1),
-  k3 = Bet[bet.indexOf(k1)],
-  k4 = Bet[bet.indexOf(k2)],
-  key = `${RandomNum(3)}${k1}${RandomNum(7)}${k2}${RandomNum(4)}`,
-  a1 = `${key.substr(0, 3)}${k3}${key.substr(4, 4)}`,
-  a2 = `${key.substr(8, 3)}${k4}${key.substr(12, 4)}`,
-  vi = RandomNum(16),
+  let offest=3,div='&',sd='u';
+  if(platform === 'android'){
+    offest=3,div='#',sd='a';
+  }else{
+    offest=2,div='|',sd='i';
+  }
+  const a1=RandomNum(8),
+  a2=RandomNum(8);
+  const k1 = bet[bet.length - 1 - bet.indexOf(a1.substr(offest, 1))],
+  k2 =bet[bet.length - 1 - bet.indexOf(a2.substr(offest, 1))];
+  const key=a1.substr(0,offest)+k1+a1.substr(offest+1)+a2.substr(0,offest)+k2+a2.substr(offest+1);
+  let vi = RandomNum(16),
   b1 = vi.substr(0, 8),
   b2 = vi.substr(8, 8),
   a3 = RandomNum(8);
   const c1 = `${a2}${b1}`,
   c2 = `${a1}${b2}`;
-  let StrIn = `${c1}a${CryptoJS.MD5(In)}3.7.0${In.substr(-4)}${c2}`;
+  
+  let StrIn = `${c1}${sd}${CryptoJS.MD5(In)}${bundShortVersion}${In.substr(-4)}${c2}`;
   const hash = CryptoJS.SHA256(StrIn).toString();
   const date = new Date().getTime() - 8 * 60 * 60 * 1000;
-
+  
   let f=new DateFormatter();
   f.locale ='en_US';
   f.dateFormat="EEE,dd MMM yyyy HH:mm:ss";
-  const today = `#${f.string(new Date(date))} GMT#`; 
-  StrIn = In + today + a3;
+  const ts=`${f.string(new Date(date))} GMT`;
+   
+  StrIn = [In,ts,a3].join(div);
   const en = CryptoJS.enc.Hex.stringify(
     CryptoJS.AES.encrypt(
     StrIn, CryptoJS.enc.Utf8.parse(key), 
@@ -262,7 +274,7 @@ let USER_HEADERS = {
   "user-agent": "Dart/2.18 (dart:io)",
   'Content-Type': 'application/json; charset=utf-8',
   'Accept-Language': 'zh-CN',
-  'x-ugitser-agent': 'android(qp1a.190711.020.n960);bmw;3.6.1(23634);cn',
+  'x-user-agent': 'android(n960);bmw;3.6.1(23634);cn',
   "accept-language": "zh-CN",
   'host': SERVER_HOST,
   "x-cluster-use-mock": "never",
